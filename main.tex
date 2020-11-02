@@ -1,11 +1,70 @@
 \documentclass{article}
-\usepackage[style=alphabetic]{biblatex}
+% \usepackage[style=alphabetic]{biblatex}
 \begin{document}
 \title{Enhancing Hi-C contact map resolution with neural network}
 \author{}
 \maketitle
-\tableofcontents
-\newpage
-    \input{introduction}
-    \input{method}
+
+\input{introduction}
+
+\section{Methods}
+
+
+Let $D$ be a set of paired ends reads of a Hi-C experiment. 
+
+We make a low and high contact maps from $D$, denoted by $M_\ell$ and $M_h$. 
+
+Let $S$ be the size of $M_\ell$ and $M_h$. 
+
+% algorithm 環境にする．
+
+\begin{verbatim}
+% training part: 
+for i = 1, 2, ..., $S-39$
+    for j = 1, 2, ..., $S-39$
+        extract sub-maps whose lefttop coordinate is (i,j) from $M_\ell$ and $M_h$. 
+
+Let $C$ be a collection of the resulting sub-maps. 
+Train a neural network using $C$. 
+
+% test part: 
+Use other chomosome. 
+
+for i = 1, 2, ..., $S-39$
+    for j = 1, 2, ..., $S-39$
+        extract sub-maps whose lefttop coordinate is (i,j) from $M_\ell$ and $M_h$. 
+
+\end{verbatim}
+
+
+
+
+
+
+\subsubsection*{Step 1 Data preparation and processing}
+Since this experiment is to validate the algorithm for mapping low-resolution data to high-resolution data, 
+high-resolution data are required. 
+
+In order to compare to some state-of-the-art approaches (HiCPlus and HiCNN), 
+we use data sets (such as GM12878 from GSE63525) which are also used in other approaches. 
+We start from generating a 10kb resolution contact map 
+using Hi-C Pro. 
+Then we perform down-sampling on high-resolution data. 
+We use BAM files to generate low-resolution contact maps by changing the bin size bigger. 
+We generate three contact maps with bin sizes are 20kb, 30kb and 40kb, respectively. 
+We use chromosome 1-8 as training sets, and chromosome 17 as test set.
+
+\subsubsection*{Step 2 Learning by Neural network}
+We separate the low-resolution contact map into many $40 \times 40$ submatrices. 
+Those submatrices are used as inputs.
+
+\subsection{Layer Structure}
+We consider the 
+
+
+
+
+\bibliographystyle{acm}
+\bibliography{ref} 
+
 \end{document}
