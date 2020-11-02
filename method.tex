@@ -1,0 +1,8 @@
+\section{Method}
+\subsection{Experiment Flow}
+\subsubsection*{Step 1 Data preparation and processing}
+Since this experiment is to validate the algorithm for mapping low-resolution data to high-resolution data, high-resolution data is required. In order to compare to some state-of-the-art approaches (HiCPlus and HiCNN), we use data sets (such as GM12878 from GSE63525) which are also used in other approaches . We start from generating 10kb resolution contact map using Hi-C Pro. Then we perform down-sampling on high-resolution data. We use bam files to generate low-resolution contact maps by changing bin size bigger. We generate three contact maps with bin sizes are 20kb, 30kb and 40kb, respectively. We use chromsome 1-8 as traning sets, and chromosome 17 as test set.
+\subsubsection*{Step 2 Learning by Neural network}
+We separate the low-resolution contact map into many $40 \times 40$ submatrices. Those submatrices are used as inputs.
+\subsection{Layer Structure}
+We consider the 
