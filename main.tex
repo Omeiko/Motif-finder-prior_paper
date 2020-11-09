@@ -41,14 +41,13 @@ for $i$ = 1, 1+$(40-O) \times R$, 1+2$\times(40-O) \times R$, ...
 % training part: 
 
 
-Let $C_\ell$ and $C_h$ be a collection of the resulting sub-maps. 
+\noindent Let $C_\ell$ and $C_h$ be a collection of the resulting sub-maps. 
 Train a neural network using $C_\ell$ and $C_h$. Mean square error is used as 
 loss function in the training process. 
 
 \begin{center}
     $MSE[C_\ell, C_h] = \frac{1}{40 \times 40} \sum_{i=1}^{40 \times 40} (C_{\ell_i}-C_{h_i})^2$
 \end{center}
-
 
 
 We can use (f,n) to represent the parameters of each layer. Parameter f means the size of the filter and n means the number of filter. 
