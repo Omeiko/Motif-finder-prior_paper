@@ -18,7 +18,7 @@ Let $R$ be the ratio of $M_\ell$ to $M_h$, which can be represented by
 $R = \frac{M_h}{M_\ell}$. And $O$ be the number of overlapping pixels between adjacent sub-maps.
 % algorithm 環境にする．
 
-\begin{Verbatim}[commandchars=\\\{\},codes={\catcode`$=3\catcode`_=8}]
+\begin{Verbatim}[commandchars=\\\{\},codes={\catcode`$=3\catcode`_=8\catcode`^=7}]
 % Divide matrices $M_\ell$ and $M_h$ \
 
 To $M_\ell:$
@@ -36,18 +36,32 @@ for $i$ = 1, 1+$(40-O) \times R$, 1+2$\times(40-O) \times R$, ...
         IF $i+40 \times R$ > $M_h$ || $j+40 \times R$ > $M_h$, BREAK 
         ELSE extract $(40 \times R) \times (40 \times R)$ sub-maps whose lefttop 
         coordinate is $(i,j)$ from $M_h$.
+\end{Verbatim}
 
 % training part: 
 
+
 Let $C_\ell$ and $C_h$ be a collection of the resulting sub-maps. 
-Train a neural network using $C_ell$ and $C_h$. Mean square error is used as 
+Train a neural network using $C_\ell$ and $C_h$. Mean square error is used as 
 loss function in the training process. 
 
-We can use (f,n) to represent the parameters of each layer. 
-Parameter f means the size of the filter and n means the number of filter. 
-##Layer1(Pattern extrcation)
-##Layer2(Low-res mapping to high-res)
-##Layer3(Predicted contact maps generation)
+\begin{center}
+    $MSE[C_\ell, C_h] = \frac{1}{40 \times 40} \sum_{i=1}^{40 \times 40} (C_{\ell_i}-C_{h_i})^2$
+\end{center}
+
+
+
+We can use (f,n) to represent the parameters of each layer. Parameter f means the size of the filter and n means the number of filter. 
+
+Layer1(Pattern extrcation)
+Base on every $40 \times 40$ sub-matrix, using $f \times f(13 \times 13 in HiCPlus)$ filters
+to extract patterns of each sub-contact-map. Which can represented by following formula:
+$F_1(X) = ReLU(w_1 * X + b_1)$
+Where $*$ represent the convolution process. $w$ represents $n \times f \times f$ filters. 
+$b$ is the bias.
+ 
+Layer2(Low-res mapping to high-res)
+Layer3(Predicted contact maps generation)
 
 
 % test part: 
@@ -57,7 +71,6 @@ Do the same dividing process like $M_\ell$ and $M_h$
 
 Calculate the Pearson's correlation between the output and $M_h$.
 
-\end{Verbatim}
 
 
 
