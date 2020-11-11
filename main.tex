@@ -26,7 +26,7 @@ To $M_\ell:$
 for $i$ = 1, 1+$40-O$, 1+2$\times(40-O)$, ...
     for $j$ = 1, 1+$40-O$, 1+2$\times(40-O)$, ...
         IF $i+40$ > $M_\ell$ || $j+40$ > $M_\ell$, BREAK 
-        ELSE extract 40 $\times$ 40 sub-maps whose lefttop coordinate
+        ELSE extract 40 $\times$ 40 sub-maps whose left-top coordinate
          is $(i,j)$ from $M_\ell$.
 
 Do the same process to $M_h:$
@@ -34,7 +34,7 @@ Do the same process to $M_h:$
 for $i$ = 1, 1+$(40-O) \times R$, 1+2$\times(40-O) \times R$, ...
     for $j$ = 1, 1+$(40-O) \times R$, 1+2$\times(40-O) \times R$, ...
         IF $i+40 \times R$ > $M_h$ || $j+40 \times R$ > $M_h$, BREAK 
-        ELSE extract $(40 \times R) \times (40 \times R)$ sub-maps whose lefttop 
+        ELSE extract $(40 \times R) \times (40 \times R)$ sub-maps whose left-top 
         coordinate is $(i,j)$ from $M_h$.
 \end{Verbatim}
 
@@ -50,12 +50,14 @@ loss function in the training process.
 \end{center}
 
 
-We can use (f,n) to represent the parameters of each layer. Parameter f means the size of the filter and n means the number of filter. 
+\noindent We can use (f,n) to represent the parameters of each layer. Parameter f means the size of the filter and n means the number of filter. 
 
-Layer1(Pattern extrcation)
-Base on every $40 \times 40$ sub-matrix, using $f \times f(13 \times 13 in HiCPlus)$ filters
+\noindent Layer1(Pattern extraction)
+Base on every $40 \times 40$ sub-matrix, using $f \times f$( $13 \times 13$ in HiCPlus) filters
 to extract patterns of each sub-contact-map. Which can represented by following formula:
+\begin{center}
 $F_1(X) = ReLU(w_1 * X + b_1)$
+\end{center}
 Where $*$ represent the convolution process. $w$ represents $n \times f \times f$ filters. 
 $b$ is the bias.
  
@@ -64,7 +66,7 @@ Layer3(Predicted contact maps generation)
 
 
 % test part: 
-Use other chomosome. 
+Use other chromosome. 
 
 Do the same dividing process like $M_\ell$ and $M_h$
 
@@ -90,8 +92,8 @@ We generate three contact maps with bin sizes are 20kb, 30kb and 40kb, respectiv
 We use chromosome 1-8 as training sets, and chromosome 17 as test set.
 
 \subsubsection*{Step 2 Learning by Neural network}
-We separate the low-resolution contact map into many $40 \times 40$ submatrices. 
-Those submatrices are used as inputs.
+We separate the low-resolution contact map into many $40 \times 40$ sub-matrices. 
+Those sub-matrices are used as inputs.
 
 \subsection{Layer Structure}
 We consider the 
