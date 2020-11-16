@@ -14,8 +14,9 @@
 Let $D$ be a set of paired ends reads of a Hi-C experiment. 
 We make a low and high contact maps from $D$, denoted by $M_\ell$ and $M_h$. 
 Let $S_\ell$ and $S_h$ be the size of $M_\ell$ and $M_h$. 
-Let $R$ be the ratio of $M_\ell$ to $M_h$, which can be represented by
-$R = \frac{M_h}{M_\ell}$. And $O$ be the number of overlapping pixels between adjacent sub-maps.
+Let $R$ be the ratio of $S_\ell$ to $S_h$, which can be represented by
+$R = \frac{S_h}{S_\ell}$. And $P$ be the number of overlapping pixels between adjacent sub-maps.
+ $K$ be the size of low-resolution sub-maps.
 % algorithm 環境にする．
 
 \begin{Verbatim}[commandchars=\\\{\},codes={\catcode`$=3\catcode`_=8\catcode`^=7}]
@@ -23,37 +24,36 @@ $R = \frac{M_h}{M_\ell}$. And $O$ be the number of overlapping pixels between ad
 
 To $M_\ell:$
 
-for $i$ = 1, 1+$40-O$, 1+2$\times(40-O)$, ...
-    for $j$ = 1, 1+$40-O$, 1+2$\times(40-O)$, ...
-        IF $i+40$ > $M_\ell$ || $j+40$ > $M_\ell$, BREAK 
-        ELSE extract 40 $\times$ 40 sub-maps whose left-top coordinate
+for $i$ = 1, 1+$K-P$, 1+2$\times(K-P)$, ...
+    for $j$ = 1, 1+$K-P$, 1+2$\times(K-P)$, ...
+        IF $i+K$ > $M_\ell$ || $j+K$ > $M_\ell$, BREAK 
+        ELSE extract K $\times$ K sub-maps whose left-top coordinate
          is $(i,j)$ from $M_\ell$.
 
 Do the same process to $M_h:$
 
-for $i$ = 1, 1+$(40-O) \times R$, 1+2$\times(40-O) \times R$, ...
-    for $j$ = 1, 1+$(40-O) \times R$, 1+2$\times(40-O) \times R$, ...
-        IF $i+40 \times R$ > $M_h$ || $j+40 \times R$ > $M_h$, BREAK 
-        ELSE extract $(40 \times R) \times (40 \times R)$ sub-maps whose left-top 
+for $i$ = 1, 1+$(K-P) \times R$, 1+2$\times(K-P) \times R$, ...
+    for $j$ = 1, 1+$(K-P) \times R$, 1+2$\times(K-P) \times R$, ...
+        IF $i+K \times R$ > $M_h$ || $j+K \times R$ > $M_h$, BREAK 
+        ELSE extract $(K \times R) \times (K \times R)$ sub-maps whose left-top 
         coordinate is $(i,j)$ from $M_h$.
 \end{Verbatim}
 
 % training part: 
 
 
-\noindent Let $C_\ell$ and $C_h$ be a collection of the resulting sub-maps. 
-Train a neural network using $C_\ell$ and $C_h$. Mean square error is used as 
+\noindent Let $C_\ell$ and $C_h$ be collections of the resulting low-resolution and high-resolution
+sub-maps. We train a neural network using $C_\ell$ and $C_h$. The mean square error(MSE) is used as 
 loss function in the training process. 
 
 \begin{center}
-    $MSE[C_\ell, C_h] = \frac{1}{40 \times 40} \sum_{i=1}^{40 \times 40} (C_{\ell_i}-C_{h_i})^2$
+    $MSE[C_\ell, C_h] = \frac{1}{K \times K} \sum_{i=1}^{K} \sum_{j=1}^{K} (C_{\ell_{i,j}}-C_{h_{i,j}})^2$
 \end{center}
-
-
-\noindent We can use (f,n) to represent the parameters of each layer. Parameter f means the size of the filter and n means the number of filter. 
+Where $C_{\ell_{i,j}}$ and $C_{h_{i,j}}$ represent left-top coordinate $(i,j)$ in $C_\ell$ and $C_h$ respectively.
+\noindent We can use $(f,n)$ to represent the parameters of each layer. Parameter $f$ means the size of the filter and $n$ means the number of filter. 
 
 \noindent Layer1(Pattern extraction)
-Base on every $40 \times 40$ sub-matrix, using $f \times f$( $13 \times 13$ in HiCPlus) filters
+Base on every $K \times K$ sub-matrix, using $f \times f$( $13 \times 13$ in HiCPlus) filters
 to extract patterns of each sub-contact-map. Which can represented by following formula:
 \begin{center}
 $F_1(X) = ReLU(w_1 * X + b_1)$
@@ -61,8 +61,10 @@ $F_1(X) = ReLU(w_1 * X + b_1)$
 Where $*$ represent the convolution process. $w$ represents $n \times f \times f$ filters. 
 $b$ is the bias.
  
-Layer2(Low-res mapping to high-res)
-Layer3(Predicted contact maps generation)
+
+\noindent Layer2(Low-res mapping to high-res)
+
+\noindent Layer3(Predicted contact maps generation)
 
 
 % test part: 
@@ -92,7 +94,7 @@ We generate three contact maps with bin sizes are 20kb, 30kb and 40kb, respectiv
 We use chromosome 1-8 as training sets, and chromosome 17 as test set.
 
 \subsubsection*{Step 2 Learning by Neural network}
-We separate the low-resolution contact map into many $40 \times 40$ sub-matrices. 
+We separate the low-resolution contact map into many $K \times K$ sub-matrices. 
 Those sub-matrices are used as inputs.
 
 \subsection{Layer Structure}
