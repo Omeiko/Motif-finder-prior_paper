@@ -47,7 +47,7 @@ sub-maps. Let $\hat{C_h}$ be the collection of the high-resolution sub-matrices 
 loss function in the training process. 
 
 \begin{center}
-    $MSE[C_\ell, C_h] = \frac{1}{K \times K} \sum_{i=1}^{K \times R} \sum_{j=1}^{K \times R} (\hat{C}_{h_{i,j}}-C_{h_{i,j}})^2$
+    $MSE[C_\ell, C_h] = \frac{1}{(K \times R)\times (K \times R)} \sum_{i=1}^{K \times R} \sum_{j=1}^{K \times R} (\hat{C}_{h_{i,j}}-C_{h_{i,j}})^2$
 \end{center}
 Where $C_{\ell_{i,j}}$ and $C_{h_{i,j}}$ represent left-top coordinate $(i,j)$ in $C_\ell$ and $C_h$ respectively.
 \noindent We can use $(f,n)$ to represent the parameters of each layer. Parameter $f$ means the size of the filter and $n$ means the number of filter. 
