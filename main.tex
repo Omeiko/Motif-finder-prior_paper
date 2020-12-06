@@ -15,7 +15,7 @@ Let $D$ be a set of paired ends reads of a Hi-C experiment.
 We generate low and high contact maps from $D$, denoted by $M_\ell$ and $M_h$. 
 Let $S_\ell$ and $S_h$ be the size of $M_\ell$ and $M_h$. 
 Let $R$ be the ratio of $S_\ell$ to $S_h$, which can be represented by
-$R = \frac{S_\ell}{S_h}$. And $P$ be the number of overlapping pixels between adjacent sub-maps.
+$R = \frac{S_\ell}{S_h}$. Let $P$ be the number of overlapping pixels between adjacent sub-maps.
 Let $K$ be the size of low-resolution sub-maps.
 % algorithm 環境にする．
 
@@ -26,16 +26,16 @@ To $M_\ell:$
 
 for $i$ = 1, 1+$K-P$, 1+2$\times(K-P)$, ...
     for $j$ = 1, 1+$K-P$, 1+2$\times(K-P)$, ...
-        IF $i+K$ > $M_\ell$ || $j+K$ > $M_\ell$, BREAK 
-        ELSE extract K $\times$ K sub-maps whose left-top coordinate
+        if $i+K$ > $M_\ell$ || $j+K$ > $M_\ell$, BREAK 
+        else extract K $\times$ K sub-maps whose left-top coordinate
          is $(i,j)$ from $M_\ell$.
 
 Do the same process to $M_h:$
 
 for $i$ = 1, 1+$(K-P) \times R$, 1+2$\times(K-P) \times R$, ...
     for $j$ = 1, 1+$(K-P) \times R$, 1+2$\times(K-P) \times R$, ...
-        IF $i+K \times R$ > $M_h$ || $j+K \times R$ > $M_h$, BREAK 
-        ELSE extract $(K \times R) \times (K \times R)$ sub-maps whose left-top 
+        if $i+K \times R$ > $M_h$ || $j+K \times R$ > $M_h$, BREAK 
+        else extract $(K \times R) \times (K \times R)$ sub-maps whose left-top 
         coordinate is $(i,j)$ from $M_h$.
 \end{Verbatim}
 
