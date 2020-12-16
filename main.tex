@@ -9,7 +9,7 @@
 \author{Wang Minggu And Maruyama Osamu}
 \maketitle
 
-\input{introduction}
+%\input{introduction}
 
 \section{Methods}
 
@@ -22,9 +22,13 @@ $R = \frac{S_\ell}{S_h}$. Let $P$ be the number of overlapping pixels between ad
 Let $K$ be the size of low-resolution sub-maps.
 % algorithm 環境にする．
 
+
+$\downarrow$delete?\newline
+
+
+---------------------------------------------------------------------
 \begin{Verbatim}[commandchars=\\\{\},codes={\catcode`$=3\catcode`_=8\catcode`^=7}]
 % Divide matrices $M_\ell$ and $M_h$ \
-
 To $M_\ell:$
 
 for $i$ = 1, 1+$K-P$, 1+2$\times(K-P)$, ...
@@ -41,7 +45,7 @@ for $i$ = 1, 1+$(K-P) \times R$, 1+2$\times(K-P) \times R$, ...
         else extract $(K \times R) \times (K \times R)$ sub-maps whose left-top 
         coordinate is $(i,j)$ from $M_h$.
 \end{Verbatim}
-
+---------------------------------------------------------------------
 \begin{figure}[htbp]
 \centering
 \includegraphics[scale=0.03]{figures/lowres_split.png}
@@ -68,17 +72,19 @@ loss function in the training process.
 Where $C_{\ell_{i,j}}$ and $C_{h_{i,j}}$ represent left-top coordinate $(i,j)$ in $C_\ell$ and $C_h$ respectively.
 \noindent We can use $(f,n)$ to represent the parameters of each layer. Parameter $f$ means the size of the filter and $n$ means the number of filter. 
 
-\noindent 1st Layer (Pattern extraction)
-Base on every $K \times K$ sub-matrix, using $f \times f$( $13 \times 13$ in HiCPlus) filters
+
+\noindent \large 1st Layer (Pattern extraction)
+Base on every $K \times K$ sub-matrix, using $n1$ filters of size $f1 \times f1$( $13 \times 13$ in HiCPlus)
 to extract patterns of each sub-contact-map. Which can represented by following formula:
 \begin{center}
 $F_1(X) = ReLU(w_1 * X + b_1)$
 \end{center}
-where $*$ represent the convolution process. $w_1$ represents $n \times f \times f$ filters. 
-$b_1$ is the bias.
+where $*$ represent the convolution process. $w_1$ represents $n1 \times f1 \times f1$ filters. $b_1$ is the bias. The output is a set of $n1$ feature maps. We use ReLU(Rectified Linear Unit) on the filter.
  
 
 \noindent 2nd Layer (Low-res mapping to high-res)
+First layer extracts n-dimensinal feature.
+
 
 \noindent 3rd Layer (Predicted contact maps generation)
 
