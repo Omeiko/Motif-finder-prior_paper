@@ -5,43 +5,59 @@
 \usepackage{float}
 % \usepackage[style=alphabetic]{biblatex}
 \begin{document}
-\title{Enhancing Hi-C contact map resolution with neural network}
-\author{Wang Minggu And Maruyama Osamu}
+\title{Enhancing Hi-C contact map resolution by neural networks}
+\author{Wang Minggu and Maruyama Osamu}
 \maketitle
 
 %\input{introduction}
 
 \section{Methods}
 
+% まずはcontact map自体の説明が必要ですね．
+A contact map, $D$, is a matrix whose $(i,j)$-element is ...
+
 
 Let $D$ be a set of paired ends reads of a Hi-C experiment. 
-We generate low and high contact maps from $D$, denoted by $M_\ell$ and $M_h$. 
-Let $S_\ell$ and $S_h$ be the size of $M_\ell$ and $M_h$. 
-Let $R$ be the ratio of $S_\ell$ to $S_h$, which can be represented by
-$R = \frac{S_\ell}{S_h}$. Let $P$ be the number of overlapping pixels between adjacent sub-maps.
+We generate low and high contact maps from $D$, 
+denoted by $M_\ell$ and $M_h$ of size $S_\ell$ and $S_h$, respectively.  
+Let $R = \frac{S_\ell}{S_h}$, \textit{i.e.}, 
+the ratio of $S_\ell$ to $S_h$.  
+%% 以前，次の行から急に分からないと話していたと思います．改善してください．
+% 次の点を考慮してください．
+% まず，何の具体的話をするかを述べる．
+% sub-map が何なのかが伝わらないと思います．
+% どういったタスクの中でどのような役割を果たすかを丁寧に語るべき．
+% 図があった方がよくないですか？
+Let $P$ be the number of overlapping pixels between adjacent sub-maps.
 Let $K$ be the size of low-resolution sub-maps.
 % algorithm 環境にする．
 
-
+% これはどういう意味ですか？
+% 一先ず不要ならば，論文の後ろに回してください．
+% または，repositoryを保持する限りは削除しても復活は可能です．手間だけど．
 $\downarrow$delete?\newline
 
+
+% for 文の最後の... は良くないですね．表現できませんかね？
+
+% verbatim をやめて algorithm の環境を使ってください．いくつか種類があるようです．
 
 ---------------------------------------------------------------------
 \begin{Verbatim}[commandchars=\\\{\},codes={\catcode`$=3\catcode`_=8\catcode`^=7}]
 % Divide matrices $M_\ell$ and $M_h$ \
 To $M_\ell:$
 
-for $i$ = 1, 1+$K-P$, 1+2$\times(K-P)$, ...
-    for $j$ = 1, 1+$K-P$, 1+2$\times(K-P)$, ...
-        if $i+K$ > $M_\ell$ || $j+K$ > $M_\ell$, BREAK 
-        else extract K $\times$ K sub-maps whose left-top coordinate
+for $i = 1, 1 + K-P, 1+2\times(K-P)$, ... 
+    for $j = 1, 1+K-P, 1+2\times(K-P)$, ...
+        if $i+K > M_\ell || j+K > M_\ell$, BREAK 
+        else extract $K \times K$ sub-maps whose left-top coordinate
          is $(i,j)$ from $M_\ell$.
 
 Do the same process to $M_h:$
 
-for $i$ = 1, 1+$(K-P) \times R$, 1+2$\times(K-P) \times R$, ...
-    for $j$ = 1, 1+$(K-P) \times R$, 1+2$\times(K-P) \times R$, ...
-        if $i+K \times R$ > $M_h$ || $j+K \times R$ > $M_h$, BREAK 
+for $i = 1, 1+(K-P) \times R, 1+2\times(K-P) \times R$, ...
+    for $j = 1, 1+(K-P) \times R, 1+2\times(K-P) \times R$, ...
+        if $i+K \times R > M_h || j+K \times R > M_h$, BREAK 
         else extract $(K \times R) \times (K \times R)$ sub-maps whose left-top 
         coordinate is $(i,j)$ from $M_h$.
 \end{Verbatim}
