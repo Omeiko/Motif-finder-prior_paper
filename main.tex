@@ -1,5 +1,7 @@
 \documentclass{article}
 \usepackage{fancyvrb}
+\usepackage{algorithm}
+\usepackage{algorithmic}
 \usepackage{graphicx}
 \usepackage{caption}
 \usepackage{float}
@@ -14,7 +16,7 @@
 \section{Methods}
 
 % まずはcontact map自体の説明が必要ですね．
-A contact map, $D$, is a matrix whose $(i,j)$-element is ...
+A contact map usually formed as a $n \times n$ matrix. The whole genome divided into n sized bins. Coordinate $(i,j)$ in contact map represents the number of interactions between bin i and bin j on the chromosome. Each contact map has a corresponding resolution, which indicates the range of each cell of the contact map.
 
 
 Let $D$ be a set of paired ends reads of a Hi-C experiment. 
@@ -35,44 +37,53 @@ Let $K$ be the size of low-resolution sub-maps.
 % これはどういう意味ですか？
 % 一先ず不要ならば，論文の後ろに回してください．
 % または，repositoryを保持する限りは削除しても復活は可能です．手間だけど．
-$\downarrow$delete?\newline
-
-
 % for 文の最後の... は良くないですね．表現できませんかね？
-
 % verbatim をやめて algorithm の環境を使ってください．いくつか種類があるようです．
 
----------------------------------------------------------------------
-\begin{Verbatim}[commandchars=\\\{\},codes={\catcode`$=3\catcode`_=8\catcode`^=7}]
+
+\begin{algorithm}[htbp]
+\caption{Generating submatrices of $M_\ell$}
+\begin{algorithmic}
 % Divide matrices $M_\ell$ and $M_h$ \
-To $M_\ell:$
+    \FOR {$i = 1, 1 + K-P, 1+2\times(K-P)$, ..., $S_\ell-K+1$}
+        \FOR {$j = 1, 1+K-P, 1+2\times(K-P)$, ..., $S_\ell-K+1$}
+            \IF {$i+K > M_\ell$ \OR $j+K > M_\ell$} 
+                \STATE break;
+            \ELSE 
+                \STATE extract $K \times K$ sub-maps whose left-top coordinate is $(i,j)$ from $M_\ell$;
+            \ENDIF    
+        \ENDFOR
+    \ENDFOR
+\end{algorithmic}
+\end{algorithm}
 
-for $i = 1, 1 + K-P, 1+2\times(K-P)$, ... 
-    for $j = 1, 1+K-P, 1+2\times(K-P)$, ...
-        if $i+K > M_\ell || j+K > M_\ell$, BREAK 
-        else extract $K \times K$ sub-maps whose left-top coordinate
-         is $(i,j)$ from $M_\ell$.
+\begin{algorithm}[htbp]
+\caption{Generating submatrices of $M_h$}
+\begin{algorithmic}
+   \FOR {$i = 1, 1+(K-P) \times R, 1+2\times(K-P) \times R$, ..., $S_h-K+1$}
+       \FOR {$j = 1, 1+(K-P) \times R, 1+2\times(K-P) \times R$, ..., $S_h-K+1$}
+            \IF {$i+K \times R > M_h$ \OR $j+K \times R > M_h$}
+                \STATE break; 
+            \ELSE 
+                \STATE extract $(K \times R) \times (K \times R)$sub-maps whose left-top coordinate is $(i,j)$ from $M_h$;
+            \ENDIF
+        \ENDFOR
+    \ENDFOR    
+\end{algorithmic}
+\end{algorithm}
 
-Do the same process to $M_h:$
-
-for $i = 1, 1+(K-P) \times R, 1+2\times(K-P) \times R$, ...
-    for $j = 1, 1+(K-P) \times R, 1+2\times(K-P) \times R$, ...
-        if $i+K \times R > M_h || j+K \times R > M_h$, BREAK 
-        else extract $(K \times R) \times (K \times R)$ sub-maps whose left-top 
-        coordinate is $(i,j)$ from $M_h$.
-\end{Verbatim}
----------------------------------------------------------------------
 \begin{figure}[htbp]
 \centering
 \includegraphics[scale=0.03]{figures/lowres_split.png}
 \caption{Split low-resolution matrix to submatrices}
+\label{low-res to submatrices}
 \end{figure}
 
 \begin{figure}[htbp]
-    \centering
-    \includegraphics[scale=0.03]{figures/highres_split.png}
-    \caption{Split high-resolution matrix to submatrices}
-    \end{figure}
+\centering
+\includegraphics[scale=0.03]{figures/highres_split.png}
+\caption{Split high-resolution matrix to submatrices}
+\end{figure}
 % training part: 
 
 
@@ -117,12 +128,13 @@ Calculate the Pearson's correlation between the output and $M_h$.
 
 
 
-
+\subsubsection*{Pre-processing}
+We do pre-pocessing
 \subsubsection*{Step 1 Data preparation and processing}
 Since this experiment is to validate the algorithm for mapping low-resolution data to high-resolution data, 
 high-resolution data are required. 
 
-In order to compare to some state-of-the-art approaches (HiCPlus and HiCNN), 
+In order to compare to some state-of-the-art approaches (HiCPlus~\cite{Zhang2018} and HiCNN~\cite{Liu2019}), 
 we use data sets (such as GM12878 from GSE63525) which are also used in other approaches. 
 We start from generating a 10kb resolution contact map 
 using Hi-C Pro. 
@@ -145,7 +157,7 @@ We consider the
 
 
 
-\bibliographystyle{acm}
+\bibliographystyle{abbrv}
 \bibliography{ref} 
 
 \end{document}
