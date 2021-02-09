@@ -1,4 +1,4 @@
-\documentclass{article}
+\documentclass[a4paper,12pt]{article}
 \usepackage{fancyvrb}
 \usepackage{algorithm}
 \usepackage{algorithmic}
@@ -6,17 +6,26 @@
 \usepackage{caption}
 \usepackage{float}
 % \usepackage[style=alphabetic]{biblatex}
+\usepackage{color, amsmath, amssymb}
+
+
 \begin{document}
 \title{Enhancing Hi-C contact map resolution by neural networks}
-\author{Wang Minggu and Maruyama Osamu}
+\author{Minggu Wang \and Osamu Maruyama}
 \maketitle
 
-%\input{introduction}
+\section{Background}
+
+\textcolor{red}{Wang-kun, please put important references here.}
+
 
 \section{Methods}
 
 % まずはcontact map自体の説明が必要ですね．
-A contact map usually formed as a $n \times n$ matrix. The whole genome divided into n sized bins. Coordinate $(i,j)$ in contact map represents the number of interactions between bin i and bin j on the chromosome. Each contact map has a corresponding resolution, which indicates the range of each cell of the contact map.
+A contact map usually formed as 
+% Wang君次は an です．
+% a 
+an $n \times n$ matrix. The whole genome divided into n sized bins. Coordinate $(i,j)$ in contact map represents the number of interactions between bin i and bin j on the chromosome. Each contact map has a corresponding resolution, which indicates the range of each cell of the contact map.
 
 
 Let $D$ be a set of paired ends reads of a Hi-C experiment. 
@@ -103,10 +112,18 @@ Where $C_{\ell_{i,j}}$ and $C_{h_{i,j}}$ represent left-top coordinate $(i,j)$ i
 \noindent \large 1st Layer (Pattern extraction)
 Base on every $K \times K$ sub-matrix, using $n1$ filters of size $f1 \times f1$( $13 \times 13$ in HiCPlus)
 to extract patterns of each sub-contact-map. Which can represented by following formula:
-\begin{center}
-$F_1(X) = ReLU(w_1 * X + b_1)$
-\end{center}
-where $*$ represent the convolution process. $w_1$ represents $n1 \times f1 \times f1$ filters. $b_1$ is the bias. The output is a set of $n1$ feature maps. We use ReLU(Rectified Linear Unit) on the filter.
+% \begin{center}
+% $F_1(X) = ReLU(w_1 * X + b_1)$
+% * でなく，\cdot か \times か　なし　です．
+% \end{center}
+\begin{equation*}
+    F_1(X) = \mathrm{ReLU}(w_1 X + b_1)
+  % or 
+    F_1(X) = \mathit{ReLU}(w_1 X + b_1)
+\end{equation*}
+%%%% ここはオンラインで説明して!!!!!
+where $*$ represent the convolution process. 
+$w_1$ represents $n1 \times f1 \times f1$ filters. $b_1$ is the bias. The output is a set of $n1$ feature maps. We use ReLU(Rectified Linear Unit) on the filter.
  
 
 \noindent 2nd Layer (Low-res mapping to high-res)
@@ -129,7 +146,7 @@ Calculate the Pearson's correlation between the output and $M_h$.
 
 
 \subsubsection*{Pre-processing}
-We do pre-pocessing
+We do pre-processing
 \subsubsection*{Step 1 Data preparation and processing}
 Since this experiment is to validate the algorithm for mapping low-resolution data to high-resolution data, 
 high-resolution data are required. 
