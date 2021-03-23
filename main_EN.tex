@@ -16,13 +16,27 @@
 
 \section{Background}
 
-\textcolor{red}{Wang-kun, please put important references here.}
-Recently, the high-throughput chromosome conformation capture (Hi-C) technique has become a powerful tool for studying the three-dimensional structure of chromosomes. Hi-C data is usually expressed as an $n \times n$ matrix. The resolution of Hi-C data is defined as the bin size of each cell of the matrix. Hi-C data at kilobase level are requisite for future genome 3D structure studies. Rao et al.(2014)~\cite{Rao2014}generated Hi-C data with 1 kilobase resolution. However, millions of sequenced reads are required to archive this resolution with a huge amount of money and time consumption.\\
-Zhang et al. ~\cite{Zhang2018}presented a approach to enhance the resolution of Hi-C data called HiCPlus. HiPlus generated low-resolution data by down-sampling the number of sequenced reads and then a neural network was used to create the mapping between high-resolution contact map and low-resolution contact map. 
-Liu et al. publiced HiCNN~\cite{Liu2019} which using residual neural network to enhenced the resolution of contact maps. HiCNN2 ~\cite{Liu2019a}combined three kinds of convolution neural networks with different layers. 
+Recently, the high-throughput chromosome conformation capture (Hi-C) technique has 
+become a powerful tool for studying the three-dimensional structure of chromosomes. 
+Hi-C data is usually represented as an $n \times n$ matrix. 
+% The resolution of a contact map ではないですかね？
+The resolution of Hi-C data is defined as the bin size of cells of the matrix. 
+Hi-C data at kilobase level are requisite for future genome 3D structure studies. 
+Rao et al.(2014) \cite{Rao2014} generated Hi-C data with 1 kilobase resolution. However, millions of sequenced reads are required to archive this resolution with a huge amount of money and time consumption.
+
+Zhang et al. \cite{Zhang2018} presented a approach to enhance the resolution of Hi-C data called HiCPlus. 
+% 次は，HiCPlus かな？
+HiPlus generates low-resolution data by down-sampling the number of sequenced reads and then a neural network was used to create the mapping between high-resolution contact map and low-resolution contact map. 
+Liu et al. publiced HiCNN \cite{Liu2019} which uses a residual neural network to enhance the resolution of contact maps. 
+% 次でもいいですか？
+% HiCNN2 \cite{Liu2019a} combines three kinds of convolution neural networks with different layers. 
+HiCNN2 \cite{Liu2019a} is a hybrid network derived from three different convolution neural networks.  
+
+\textcolor{red}{Please add the references related to super-resolution}
+
+
 
 \section{Methods}
-
 A contact map usually formed as  an $n \times n$ matrix. The whole genome divided into n sized bins. Coordinate $(i,j)$ in contact map represents the number of interactions between bin i and bin j on the chromosome. Each contact map has a corresponding resolution, which indicates the range of each cell of the contact map.
 
 
